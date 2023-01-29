@@ -14,3 +14,128 @@
     --sl-color-primary-950: var(--sl-color-purple-950);
     --sl-input-focus-ring-color: var(--sl-color-purple-100);
 }
+
+$spaces: 0, 2, 4, 6, 8, 10, 12, 14, 16, 20, 22, 24, 26, 30, 32;
+$borders: 1, 2;
+
+/* spaces yg sudah dipakai & perlu dipertahankan:
+   8, 16
+*/
+
+@each $border in $borders {
+   .bt-#{$border} {
+    border-top: $border + px solid var(--gdx-color-outline);
+  }
+
+   .bb-#{$border} {
+    border-bottom: $border + px solid var(--gdx-color-outline);
+  }
+
+   .ba-#{$border} {
+    border: $border + px solid var(--gdx-color-outline);
+  }
+}
+
+@each $space in $spaces {
+  .mb-#{$space},
+   .mb-#{$space} {
+    margin-bottom: $space + px !important;
+  }
+
+  .mt-#{$space},
+   .mt-#{$space} {
+    margin-top: $space + px !important;
+  }
+
+   .ml-#{$space} {
+    margin-left: $space + px !important;
+  }
+
+   .mr-#{$space} {
+    margin-right: $space + px !important;
+  }
+
+   .mh-#{$space} {
+    margin-inline: $space + px !important;
+  }
+
+   .mv-#{$space} {
+    margin-block: $space + px !important;
+  }
+
+   .ma-#{$space} {
+    margin: $space + px !important;
+  }
+
+   .pb-#{$space} {
+    padding-bottom: $space + px !important;
+  }
+
+   .pt-#{$space} {
+    padding-top: $space + px !important;
+  }
+
+   .pl-#{$space} {
+    padding-left: $space + px !important;
+  }
+
+   .pr-#{$space} {
+    padding-right: $space + px !important;
+  }
+
+   .ph-#{$space} {
+    padding-inline: $space + px !important;
+  }
+
+   .pv-#{$space} {
+    padding-block: $space + px !important;
+  }
+
+   .pa-#{$space} {
+    padding: $space + px !important;
+  }
+}
+
+body {
+    margin: 0px;
+    height: 100vh;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-row {
+    display: flex;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.tappable {
+    cursor: pointer;
+}
+
+[color="neutral"] {
+    color: var(--sl-color-neutral-400);
+}
+
+[color="white"] {
+    color: var(--sl-color-neutral-0);
+}
+
+[color="black"] {
+    color: var(--sl-color-neutral-1000);
+}
+
+sl-option[aria-selected="false"]::part(base) {
+    background-color: transparent !important;
+    color: var(--sl-color-neutral-1000) !important;
+}
+
+.option--current {
+    background-color: transparent;
+    color: var(--sl-color-neutral-1000);
+}

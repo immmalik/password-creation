@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppModalComponent } from './app-modal/app-modal.component';
+import { PipesModule } from './pipes.module';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { AppModalComponent } from './app-modal/app-modal.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    PipesModule
   ],
   providers: [],
   bootstrap: [AppComponent],

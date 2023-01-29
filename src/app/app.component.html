@@ -1,29 +1,63 @@
-<sl-button size="small">Click me</sl-button>
-<sl-input></sl-input>
-<div class="dropdown-selection">
-  <sl-avatar
-    image="https://images.unsplash.com/photo-1591871937573-74dbba515c4c?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
-    label="Avatar of a white and grey kitten on grey textile"
-    loading="lazy"
-  ></sl-avatar>
-  <sl-select label="Select one">
-    <sl-option value="option-1">Option 1</sl-option>
-    <sl-option value="option-2">Option 2</sl-option>
-    <sl-option value="option-3">Option 3</sl-option>
-  </sl-select>
-  <sl-progress-ring value="25"></sl-progress-ring>
-  <sl-radio-group label="Select an option" name="a" value="1">
-    <sl-radio value="1">Option 1</sl-radio>
-    <sl-radio value="2">Option 2</sl-radio>
-    <sl-radio value="3">Option 3</sl-radio>
-  </sl-radio-group>
-  <sl-checkbox>Checkbox</sl-checkbox>
-  <!-- <sl-dropdown>
-    <sl-button slot="trigger" caret>Edit</sl-button>
-    <sl-menu>
-      <sl-menu-item value="cut">Cut</sl-menu-item>
-      <sl-menu-item value="copy">Copy</sl-menu-item>
-      <sl-menu-item value="paste">Paste</sl-menu-item>
-    </sl-menu>
-  </sl-dropdown> -->
+<div class="container">
+  <!-- <sl-button size="medium">Click me</sl-button>
+  <sl-input></sl-input>
+  <div class="dropdown-selection">
+    <sl-avatar
+      image="https://images.unsplash.com/photo-1591871937573-74dbba515c4c?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+      label="Avatar of a white and grey kitten on grey textile"
+      loading="lazy"
+    ></sl-avatar>
+    <sl-select label="Select one">
+      <sl-option value="option-1">Option 1</sl-option>
+      <sl-option value="option-2">Option 2</sl-option>
+      <sl-option value="option-3">Option 3</sl-option>
+    </sl-select>
+    <sl-progress-ring value="25"></sl-progress-ring>
+    <sl-radio-group label="Select an option" name="a" value="1">
+      <sl-radio value="1">Option 1</sl-radio>
+      <sl-radio value="2">Option 2</sl-radio>
+      <sl-radio value="3">Option 3</sl-radio>
+    </sl-radio-group>
+    <sl-checkbox>Checkbox</sl-checkbox>
+  </div> -->
+  <div class="box box-white">
+    <div class="input-form">
+      <sl-input value="{{name}}" label="Name of app or domain" placeholder="Type here"></sl-input>
+    </div>
+    <div class="input-form">
+      <sl-select label="Choose password formula" placeholder="Choose here" value="null">
+        <sl-option *ngFor="let item of options; let i = index" (click)="chooseFormula(item)" value="{{item.value}}">
+          <div class="flex-column ml-8">
+            <b>Formula {{i+1}} </b>
+            <label color="neutral" class="tappable">{{item.label}}</label>
+          </div>
+        </sl-option>
+      </sl-select>
+    </div>
+  </div>
+
+  <div class="box box-yellow">
+    <div class="input-form">
+      <b color="white" class="mb-4">Password Result</b>
+      <div class="flex-row align-center">
+        <div class="password-result-field align-center">
+          <div class="text" id="text">
+            <span *ngFor="let text of formulaSelected.formula" (mouseover)="showRulesHint(text)" (mouseleave)="leaveRulesHint()">{{this.name | formula:text}}</span>
+          </div>
+          <div class="flex-row tappable" (click)="tooglePassword()">
+            <img *ngIf="!isShowPassword" src="assets/icons/eye.svg" alt="">
+            <img *ngIf="isShowPassword" src="assets/icons/eye-off.svg" alt="">
+          </div>
+        </div>
+        <div>
+          <img src="assets/icons/copy.svg" alt="">
+        </div>
+      </div>
+      <span id="rules-hint" color="white" class="mt-4"></span>
+    </div>
+    <div class="flex-column mt-16">
+      <sl-button variant="primary">Try Create Your Own Formula</sl-button>
+    </div>
+  </div>
+  <img class="bg-1" src="assets/images/bg-1.svg" alt="">
 </div>
