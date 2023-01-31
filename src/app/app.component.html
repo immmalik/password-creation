@@ -55,10 +55,12 @@
       <div class="input-form">
         <sl-input value="{{name}}" label="Total Digit" placeholder="Type here"></sl-input>
       </div>
-      <div class="input-form">
-        <sl-checkbox>Checkbox</sl-checkbox>
+      <div class="flex-row content-space-between">
+        <sl-checkbox class="fx-flex">From last name</sl-checkbox>
+        <sl-checkbox class="fx-flex">Uppercase</sl-checkbox>
       </div>
     </ng-container>
+    <sl-button class="mt-16" variant="primary" outline style="width: 100%;">Save Formula</sl-button>
   </div>
 
   <div *ngIf="!createStep" class="box box-yellow">
