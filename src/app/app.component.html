@@ -20,7 +20,7 @@
     </sl-radio-group>
     <sl-checkbox>Checkbox</sl-checkbox>
   </div> -->
-  <div class="box box-white">
+  <div *ngIf="!createStep" class="box box-white">
     <div class="input-form">
       <sl-input value="{{name}}" label="Name of app or domain" placeholder="Type here"></sl-input>
     </div>
@@ -36,7 +36,32 @@
     </div>
   </div>
 
-  <div class="box box-yellow">
+  <div *ngIf="createStep" class="box box-white">
+    <div class="input-form">
+      <sl-input value="{{name}}" label="Example name of app or domain" placeholder="Type here"></sl-input>
+    </div>
+    <div class="input-form">
+      <sl-select label="Choose password rules" placeholder="Choose here" value="null">
+        <sl-option *ngFor="let item of ruleList; let i = index" (click)="chooseRules(item)" value="{{item.type}}">
+          <div class="flex-row content-space-between ml-8">
+            <label>{{item.type}} </label>
+            <label color="neutral" class="tappable">{{item.sublabel}}</label>
+          </div>
+        </sl-option>
+      </sl-select>
+    </div>
+    <hr>
+    <ng-container>
+      <div class="input-form">
+        <sl-input value="{{name}}" label="Total Digit" placeholder="Type here"></sl-input>
+      </div>
+      <div class="input-form">
+        <sl-checkbox>Checkbox</sl-checkbox>
+      </div>
+    </ng-container>
+  </div>
+
+  <div *ngIf="!createStep" class="box box-yellow">
     <div class="input-form">
       <b color="white" class="mb-4">Password Result</b>
       <div class="flex-row align-center">
@@ -50,13 +75,13 @@
           </div>
         </div>
         <div>
-          <img src="assets/icons/copy.svg" alt="">
+          <img (click)="copyClipboard()" class="tappable" src="assets/icons/copy.svg" alt="">
         </div>
       </div>
       <span id="rules-hint" color="white" class="mt-4"></span>
     </div>
     <div class="flex-column mt-16">
-      <sl-button variant="primary">Try Create Your Own Formula</sl-button>
+      <sl-button (click)="createFormula()" variant="primary">Try Create Your Own Formula</sl-button>
     </div>
   </div>
   <img class="bg-1" src="assets/images/bg-1.svg" alt="">

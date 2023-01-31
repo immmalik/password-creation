@@ -66,6 +66,21 @@ export class AppComponent {
   public formulaSelected: any = [];
   public isShowPassword = true;
   public resultPassword: any = '';
+  public createStep = false;
+  public ruleList = [
+    {
+      type: 'Name',
+      sublabel: 'twitter.com'
+    },
+    {
+      type: 'Length',
+      sublabel: 'Domain Length'
+    },
+    {
+      type: 'Input',
+      sublabel: 'Text, number or symbol'
+    }
+  ]; 
   ngOninit() {
   }
 
@@ -100,12 +115,18 @@ export class AppComponent {
     if (textElement) {
       console.log(textElement.textContent);
       // -webkit-text-security: disc;
+      let lc = 0;
       Array.from(textElement.children).forEach((element:any) => {
-        console.log(element);
+        console.log(element.textContent);
         console.log(this.createDot(element.textContent));
         if (this.isShowPassword) {
           element.textContent = this.createDot(element.textContent);
+        } else {
+          element.textContent = this.resultPassword.substr(lc, element.textContent.length);
         }
+        console.log(lc, element.textContent);
+        
+        lc = lc + element.textContent.length;
       });
     }
     this.isShowPassword = !this.isShowPassword;
@@ -114,9 +135,23 @@ export class AppComponent {
   createDot(str:any) {
     let star = '';
     for (let i in str) {
-      console.log(str[i]);
       star = star + '*';
     }
     return star;
+  }
+
+  copyClipboard() {
+    var copyText: any = document.querySelector('#text') || '';
+    if (copyText) {
+      navigator.clipboard.writeText(copyText.textContent);
+    }
+  }
+
+  createFormula() {
+    this.createStep = true;
+  }
+
+  chooseRules(ev: any) {
+    console.log(ev);
   }
 }
