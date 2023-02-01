@@ -67,6 +67,9 @@ export class AppComponent {
   public isShowPassword = true;
   public resultPassword: any = '';
   public createStep = false;
+  public rule: any;
+  public totalDigit: any;
+  public character: any;
   public ruleList = [
     {
       type: 'Name',
@@ -151,7 +154,11 @@ export class AppComponent {
     this.createStep = true;
   }
 
+  saveFormula() {
+  }
+
   chooseRules(ev: any) {
     console.log(ev);
+    this.rule = ev;
   }
 }
