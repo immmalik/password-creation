@@ -47,8 +47,40 @@
                 font-size: 16px;
                 font-weight: 700;
                 letter-spacing: 5px;
+                position: relative;
                 &:hover {
                     color: var(--sl-color-primary-500);
+                }
+                &.chip {
+                    border: 1px solid black;
+                    border-radius: 4px;
+                    margin-right: 6px;
+                    padding: 4px;
+                    letter-spacing: 0;
+                    &.onEdit {
+                        border-radius: 4px 0px 4px 4px;
+                    }
+                }
+                &.chip:hover {
+                    border: 1px solid var(--sl-color-primary-500);
+                    .remove {
+                        background: var(--sl-color-primary-500);
+                    }
+                }
+                .remove {
+                    position: absolute;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: red;
+                    top: -17px;
+                    right: -1px;
+                    width: 17px;
+                    height: 17px;
+                    border-radius: 4px 4px 0 0;
+                    img {
+                        width: 12px;
+                    }
                 }
             }
         }

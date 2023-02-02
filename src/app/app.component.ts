@@ -72,15 +72,15 @@ export class AppComponent {
   public character: any;
   public ruleList = [
     {
-      type: 'Name',
+      type: 'App / Domain Name',
       sublabel: 'twitter.com'
     },
     {
-      type: 'Length',
+      type: 'App / Domain Name Length',
       sublabel: 'Domain Length'
     },
     {
-      type: 'Input',
+      type: 'Input text, number or symbol',
       sublabel: 'Text, number or symbol'
     }
   ]; 
