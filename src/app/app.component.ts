@@ -72,18 +72,22 @@ export class AppComponent {
   public character: any;
   public ruleList = [
     {
-      type: 'App / Domain Name',
+      label: 'App / Domain Name',
+      type: 'Name',
       sublabel: 'twitter.com'
     },
     {
-      type: 'App / Domain Name Length',
+      label: 'App / Domain Name Length',
+      type: 'Length',
       sublabel: 'Domain Length'
     },
     {
-      type: 'Input text, number or symbol',
+      label: 'Input text, number or symbol',
+      type: 'Input',
       sublabel: 'Text, number or symbol'
     }
-  ]; 
+  ];
+  public inAction: any;
   ngOninit() {
   }
 
@@ -148,6 +152,11 @@ export class AppComponent {
     if (copyText) {
       navigator.clipboard.writeText(copyText.textContent);
     }
+  }
+
+  onDrag(index: number) {
+    this.inAction = index;
+    console.log(this.inAction);
   }
 
   createFormula() {
