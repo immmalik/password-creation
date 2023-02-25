@@ -38,7 +38,7 @@
 
   <div *ngIf="createStep" class="box box-white">
     <div class="input-form">
-      <sl-input value="{{name}}" label="Example name of app or domain" placeholder="Type here"></sl-input>
+      <sl-input value="{{nameApp}}" (sl-input)="changeRules($event, 'name')" label="Example name of app or domain" placeholder="Type here"></sl-input>
     </div>
     <div class="input-form">
       <sl-select label="Choose password rules" placeholder="Choose here" value="null">
@@ -50,51 +50,77 @@
         </sl-option>
       </sl-select>
     </div>
-    <hr>
-    <ng-container *ngIf="rule?.type === 'Name'">
+    <hr *ngIf="rule?.type === 'name' || rule?.type === 'input'">
+    <ng-container *ngIf="rule?.type === 'name'">
       <div class="input-form">
-        <sl-input value="{{totalDigit}}" label="Total digit character" type="number" placeholder="Type here"></sl-input>
+        <sl-input value="{{totalDigit}}" (sl-input)="changeRules($event, 'totalDigit')" label="Total digit character" type="number" placeholder="Type here"></sl-input>
       </div>
       <div class="flex-row content-space-between">
-        <sl-checkbox class="fx-flex">From last name</sl-checkbox>
-        <sl-checkbox class="fx-flex">Uppercase</sl-checkbox>
+        <sl-checkbox class="fx-flex" (sl-change)="changeRules($event, 'lastname')" value="{{lastname}}">From last name</sl-checkbox>
+        <sl-checkbox class="fx-flex" (sl-change)="changeRules($event, 'uppercase')" value="{{uppercase}}">Uppercase</sl-checkbox>
       </div>
     </ng-container>
-    <ng-container *ngIf="rule?.type === 'Input'">
+    <ng-container *ngIf="rule?.type === 'input'">
       <div class="input-form">
-        <sl-input value="{{character}}" label="Character" placeholder="Type here"></sl-input>
+        <sl-input value="{{character}}" (sl-input)="changeRules($event, 'character')" label="Character" placeholder="Type here"></sl-input>
       </div>
     </ng-container>
-    <sl-button class="mt-16" variant="primary" outline style="width: 100%;">Insert Rules</sl-button>
+    <hr>
+    <div class="rules-preview">
+      <label color="neutral">{{'Rules Preview'}}</label>
+      <h4>{{rules}}</h4>
+    </div>
+    <sl-button class="mt-16" (click)="isertRules()" variant="primary" outline style="width: 100%;">Insert Rules</sl-button>
   </div>
 
-  <div class="box box-yellow">
+  <div *ngIf="!createStep" class="box box-yellow">
     <div class="input-form">
-      <b *ngIf="!createStep" color="white" class="mb-4">Password Result</b>
-      <b *ngIf="createStep" color="white" class="mb-4">Formula Result</b>
+      <b color="white" class="mb-4">Password Result</b>
       <div class="flex-row align-center">
         <div class="password-result-field align-center">
           <div class="text" id="text">
-            <span *ngFor="let text of formulaSelected.formula; let i = index" [ngClass]="{'chip': createStep, 'onEdit': true}"
-              (mouseover)="showRulesHint(text)" (mouseleave)="leaveRulesHint()" (click)="onDrag(i)">
-              <div *ngIf="i === inAction" class="remove"><img class="tappable" src="assets/icons/x.svg" alt=""></div>
+            <span *ngFor="let text of formulaSelected.formula; let i = index"
+              (mouseover)="showRulesHint(text)" (mouseleave)="leaveRulesHint()">
               {{this.name | formula:text}}
             </span>
           </div>
-          <div *ngIf="!createStep" class="flex-row tappable" (click)="tooglePassword()">
+          <div class="flex-row tappable" (click)="tooglePassword()">
             <img *ngIf="!isShowPassword" src="assets/icons/eye.svg" alt="">
             <img *ngIf="isShowPassword" src="assets/icons/eye-off.svg" alt="">
           </div>
         </div>
-        <div *ngIf="!createStep" class="ml-16">
+        <div class="ml-16">
           <img (click)="copyClipboard()" class="tappable" src="assets/icons/copy.svg" alt="">
         </div>
       </div>
-      <span id="rules-hint" color="white" class="mt-4"></span>
+      <!-- <span id="rules-hint" color="white" class="mt-4"></span> -->
+      <span id="rules-hint" color="white" class="mt-4">{{rulesHint}}</span>
     </div>
     <div class="flex-column mt-16">
-      <sl-button *ngIf="!createStep" (click)="createFormula()" variant="primary">Try Create Your Own Formula</sl-button>
-      <sl-button *ngIf="createStep" (click)="saveFormula()" variant="primary">Save Formula</sl-button>
+      <sl-button (click)="createFormula()" variant="primary">Try Create Your Own Formula</sl-button>
+    </div>
+  </div>
+
+  <div *ngIf="createStep" class="box box-yellow">
+    <div class="input-form">
+      <b color="white" class="mb-4">Formula Result</b>
+      <div class="flex-row align-center">
+        <div class="password-result-field align-center">
+          <div class="text" id="text">
+            <span *ngFor="let text of formulaResult; let i = index" class="chip onEdit"
+              (mouseover)="showRulesHint(text)" (mouseleave)="leaveRulesHint()" (click)="onDrag(i)">
+              <div *ngIf="i === inAction" (click)="removeRules(i)" class="remove"><img class="tappable" src="assets/icons/x.svg" alt=""></div>
+              <!-- {{nameApp | formula:text}} -->
+              {{text.rules}}
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- <span id="rules-hint" color="white" class="mt-4"></span> -->
+      <span id="rules-hint" color="white" class="mt-4">{{rulesHint}}</span>
+    </div>
+    <div class="flex-column mt-16">
+      <sl-button (click)="saveFormula()" variant="primary">Save Formula</sl-button>
     </div>
   </div>
   <img class="bg-1" src="assets/images/bg-1.svg" alt="">

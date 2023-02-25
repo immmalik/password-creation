@@ -10,7 +10,8 @@ const feather = require('feather-icons')
 })
 export class AppComponent {
   public title = 'password creation';
-  public name = 'example';
+  public name: any = 'example.com';
+  public nameApp: any = 'example.com';
   public options = [
     {
       value: '1',
@@ -18,7 +19,7 @@ export class AppComponent {
         {
           type: 'name',
           value: '2*',
-          hint: '2 digits from last of name'
+          hint: 'The last 2 digits of the app name'
         },
         {
           type: 'input',
@@ -28,14 +29,14 @@ export class AppComponent {
         {
           type: 'name',
           value: '*3',
-          hint: '3 digits from first of name'
+          hint: 'The last 3 digits of the app name'
         },
         {
           type: 'input',
           value: '&3',
           hint: 'character input'
         }],
-      label: '** (last 2 digit) + AU + *** (first 3 digit) + &3',
+      label: '** (last 2 digits) + AU + *** (first 3 digits) + &3',
     },
     {
       value: '2',
@@ -43,7 +44,7 @@ export class AppComponent {
         {
           type: 'name',
           value: '3*',
-          hint: '3 digits from last of name'
+          hint: 'The last 3 digits of the app name'
         },
         {
           type: 'input',
@@ -53,37 +54,42 @@ export class AppComponent {
         {
           type: 'name',
           value: '*2',
-          hint: '2 digits from first of name'
+          hint: 'The first 2 digits of the app name'
         },
         {
           type: 'input',
           value: '/3',
           hint: 'character input'
         }],
-      label: '*** (last 3 digit) + AF + ** (first 2 digit) + /3',
+      label: '*** (last 3 digits) + AF + ** (first 2 digits) + /3',
     }
   ];
   public formulaSelected: any = [];
+  public formulaResult: any = [];
   public isShowPassword = true;
   public resultPassword: any = '';
   public createStep = false;
   public rule: any;
+  public rulesHint: any = '';
   public totalDigit: any;
   public character: any;
+  public lastname = false;
+  public uppercase = false;
+  public rules = '';
   public ruleList = [
     {
       label: 'App / Domain Name',
-      type: 'Name',
+      type: 'name',
       sublabel: 'twitter.com'
     },
     {
       label: 'App / Domain Name Length',
-      type: 'Length',
-      sublabel: 'Domain Length'
+      type: 'length',
+      sublabel: 'Domain length'
     },
     {
       label: 'Input text, number or symbol',
-      type: 'Input',
+      type: 'input',
       sublabel: 'Text, number or symbol'
     }
   ];
@@ -106,15 +112,17 @@ export class AppComponent {
     console.log('hover', text);
     const hintElement = document.querySelector('#rules-hint');
     if (hintElement) {
-      hintElement.textContent = text.hint;
+      // hintElement.textContent = text.hint;
     }
+    this.rulesHint = text.hint;
   }
 
   leaveRulesHint() {
     const hintElement = document.querySelector('#rules-hint');
     if (hintElement) {
-      hintElement.textContent = '';
+      // hintElement.textContent = '';
     }
+    this.rulesHint = '';
   }
 
   tooglePassword() {
@@ -159,8 +167,94 @@ export class AppComponent {
     console.log(this.inAction);
   }
 
+  changeRules(ev: any, type: string) {
+    switch (type) {
+      case 'name':
+        this.nameApp = ev.target.value;
+        console.log(ev, this.nameApp);
+        if (this.rule.type === 'name') {
+          this.checkRules();
+        }
+        break;
+      case 'totalDigit':
+        console.log('totalDigit', ev.target.value);
+        this.totalDigit = ev.target.value;
+        this.checkRules();
+        break;
+      case 'character':
+        console.log('character', ev.target.value);
+        this.rules = ev.target.value;
+        break;
+      case 'lastname':
+        console.log('lastname', ev.target.__checked);
+        this.lastname = ev.target.__checked;
+        this.checkRules();
+        break;
+      case 'uppercase':
+        console.log('uppercase', ev.target.__checked);
+        this.uppercase = ev.target.__checked;
+        this.checkRules();
+        break;
+    }
+    console.log(ev);
+  }
+
+  checkRules() {
+    if (this.lastname) {
+      this.rules = this.nameApp.substr(this.nameApp.length - this.totalDigit);
+    } else {
+      this.rules = this.nameApp.substr(0, this.totalDigit);
+    }
+    if (this.uppercase) {
+      this.rules = this.rules.toUpperCase();
+    } else {
+      this.rules = this.rules.toLowerCase();
+    }
+  }
+
+  isertRules() {
+    let value = '';
+    let hint = '';
+    if (this.rule.type === 'length') {
+      value = this.rules;
+      hint = 'character length from app name';
+    } else if (this.rule.type === 'name') {
+      if (this.lastname) {
+        value = this.totalDigit + '*';
+        hint = 'The last ' + this.totalDigit +' digits of the app name';
+        if (this.uppercase) {
+          hint = 'The last ' + this.totalDigit +' digits of the app name (uppercase)';
+        }
+      } else {
+        value = '*' + this.totalDigit;
+        hint = 'The first ' + this.totalDigit +' digits of the app name';
+        if (this.uppercase) {
+          hint = 'The first ' + this.totalDigit +' digits of the app name (uppercase)';
+        }
+      }
+    } else if (this.rule.type === 'input') {
+      value = this.rules;
+      hint = 'character input';
+    }
+    let item = {
+      type: this.rule.type,
+      value: value,
+      rules: this.rules,
+      hint: hint
+    };
+    this.formulaResult.push(item);
+    console.log(this.formulaResult, 'this.formulaResult');
+  }
+
+  removeRules(index: number) {
+    this.formulaResult.splice(index, 1);
+    this.rulesHint = '';
+    this.inAction = '';
+  }
+
   createFormula() {
     this.createStep = true;
+    this.rulesHint = '';
   }
 
   saveFormula() {
@@ -169,5 +263,14 @@ export class AppComponent {
   chooseRules(ev: any) {
     console.log(ev);
     this.rule = ev;
+    if (this.rule.type === 'length') {
+      this.rules = this.nameApp.length;
+      console.log(ev, this.nameApp);
+    } else if (this.rule.type === 'name') {
+      this.rules = '';
+      this.totalDigit = '';
+    } else if (this.rule.type === 'input') {
+      this.rules = '';
+    }
   }
 }
