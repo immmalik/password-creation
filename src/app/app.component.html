@@ -22,7 +22,7 @@
   </div> -->
   <div *ngIf="!createStep" class="box box-white">
     <div class="input-form">
-      <sl-input value="{{name}}" label="Name of app or domain" placeholder="Type here"></sl-input>
+      <sl-input value="{{name}}" (sl-input)="changeName($event)" label="Name of app or domain" placeholder="Type here"></sl-input>
     </div>
     <div class="input-form">
       <sl-select label="Choose password formula" placeholder="Choose here" value="null">
@@ -70,7 +70,7 @@
       <label color="neutral">{{'Rules Preview'}}</label>
       <h4>{{rules}}</h4>
     </div>
-    <sl-button class="mt-16" (click)="isertRules()" variant="primary" outline style="width: 100%;">Insert Rules</sl-button>
+    <sl-button class="mt-16" (click)="isertRules()" disabled="{{rules === '' ? true:null}}" variant="primary" outline style="width: 100%;">Insert Rules</sl-button>
   </div>
 
   <div *ngIf="!createStep" class="box box-yellow">
@@ -107,7 +107,7 @@
       <div class="flex-row align-center">
         <div class="password-result-field align-center">
           <div class="text" id="text">
-            <span *ngFor="let text of formulaResult; let i = index" class="chip onEdit"
+            <span *ngFor="let text of formulaResult.formula; let i = index" class="chip onEdit"
               (mouseover)="showRulesHint(text)" (mouseleave)="leaveRulesHint()" (click)="onDrag(i)">
               <div *ngIf="i === inAction" (click)="removeRules(i)" class="remove"><img class="tappable" src="assets/icons/x.svg" alt=""></div>
               <!-- {{nameApp | formula:text}} -->
@@ -120,7 +120,7 @@
       <span id="rules-hint" color="white" class="mt-4">{{rulesHint}}</span>
     </div>
     <div class="flex-column mt-16">
-      <sl-button (click)="saveFormula()" variant="primary">Save Formula</sl-button>
+      <sl-button (click)="saveFormula()" disabled="{{formulaResult.formula.length === 0 ? true:null}}" variant="primary">Save Formula</sl-button>
     </div>
   </div>
   <img class="bg-1" src="assets/images/bg-1.svg" alt="">

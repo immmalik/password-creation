@@ -65,7 +65,10 @@ export class AppComponent {
     }
   ];
   public formulaSelected: any = [];
-  public formulaResult: any = [];
+  public formulaResult: any = {
+    label: '',
+    formula: []
+  };
   public isShowPassword = true;
   public resultPassword: any = '';
   public createStep = false;
@@ -95,6 +98,10 @@ export class AppComponent {
   ];
   public inAction: any;
   ngOninit() {
+  }
+
+  changeName(ev: any) {
+    this.name = ev.target.value;
   }
 
   chooseFormula(val: any) {
@@ -158,7 +165,8 @@ export class AppComponent {
   copyClipboard() {
     var copyText: any = document.querySelector('#text') || '';
     if (copyText) {
-      navigator.clipboard.writeText(copyText.textContent);
+      copyText = copyText.textContent.replace(/\s/g, '');
+      navigator.clipboard.writeText(copyText);
     }
   }
 
@@ -240,14 +248,14 @@ export class AppComponent {
       type: this.rule.type,
       value: value,
       rules: this.rules,
-      hint: hint
+      hint: hint,
     };
-    this.formulaResult.push(item);
+    this.formulaResult.formula.push(item);
     console.log(this.formulaResult, 'this.formulaResult');
   }
 
   removeRules(index: number) {
-    this.formulaResult.splice(index, 1);
+    this.formulaResult.formula.splice(index, 1);
     this.rulesHint = '';
     this.inAction = '';
   }
@@ -258,6 +266,45 @@ export class AppComponent {
   }
 
   saveFormula() {
+    this.formulaResult.label = '';
+    // label: '*** (last 3 digits) + AF + ** (first 2 digits) + /3',
+    let label = '';
+    this.formulaResult.formula.forEach((element: any, index: number) => {
+      if (element.type == 'name') {
+        if (element.value.substr(0, 1) == '*') { // first of the string
+          const digit = element.value.substr(1);
+          let star = '';
+          for (let index = 0; index < digit; index++) {
+            star = star + '*';
+          }
+          label = label + star + ' (first '+ digit +' digits)';
+        } else { // last of the string
+          const digit = element.value.substr(0, element.value.length - 1);
+          let star = '';
+          for (let index = 0; index < digit; index++) {
+            star = star + '*';
+          }
+          label = label + star + ' (last '+ digit +' digits)';
+        }
+      }
+
+      if (element.type == 'input') {
+        label = label + element.value;
+      }
+
+      if (element.type == 'length') {
+        label = label + element.value;
+      }
+
+      if (index < this.formulaResult.formula.length - 1) {
+        label = label + ' + ';
+      }
+    });
+    this.formulaResult.label = label;
+    this.formulaResult.value = this.options.length + 1;
+    console.log(this.formulaResult, 'this.formulaResult');
+    this.options.push(this.formulaResult);
+    this.createStep = false;
   }
 
   chooseRules(ev: any) {
@@ -269,6 +316,8 @@ export class AppComponent {
     } else if (this.rule.type === 'name') {
       this.rules = '';
       this.totalDigit = '';
+      this.lastname = false;
+      this.uppercase = false;
     } else if (this.rule.type === 'input') {
       this.rules = '';
     }
