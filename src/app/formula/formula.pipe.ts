@@ -15,6 +15,9 @@ export class FormulaPipe implements PipeTransform {
         const digit = rule.value.substr(0, rule.value.length - 1);
         result = name.substr(name.length - digit);
       }
+      if (rule.uppercase) {
+        result = result.toUpperCase();
+      }
     }
     if (rule.type == 'input') {
       result = rule.value;
@@ -22,6 +25,8 @@ export class FormulaPipe implements PipeTransform {
     if (rule.type == 'length') {
       result = rule.value;
     }
+    console.log(rule, 'rule');
+    
     return result;
   }
 

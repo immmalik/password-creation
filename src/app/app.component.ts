@@ -176,6 +176,7 @@ export class AppComponent {
   }
 
   changeRules(ev: any, type: string) {
+    console.log(type, 'type')
     switch (type) {
       case 'name':
         this.nameApp = ev.target.value;
@@ -190,6 +191,7 @@ export class AppComponent {
         this.checkRules();
         break;
       case 'character':
+        this.uppercase = false;
         console.log('character', ev.target.value);
         this.rules = ev.target.value;
         break;
@@ -226,17 +228,20 @@ export class AppComponent {
     if (this.rule.type === 'length') {
       value = this.rules;
       hint = 'character length from app name';
+      this.uppercase = false;
     } else if (this.rule.type === 'name') {
       if (this.lastname) {
         value = this.totalDigit + '*';
         hint = 'The last ' + this.totalDigit +' digits of the app name';
         if (this.uppercase) {
+          // value = this.totalDigit + '*^';
           hint = 'The last ' + this.totalDigit +' digits of the app name (uppercase)';
         }
       } else {
         value = '*' + this.totalDigit;
         hint = 'The first ' + this.totalDigit +' digits of the app name';
         if (this.uppercase) {
+          // value = '*' + this.totalDigit + '^';
           hint = 'The first ' + this.totalDigit +' digits of the app name (uppercase)';
         }
       }
@@ -249,6 +254,7 @@ export class AppComponent {
       value: value,
       rules: this.rules,
       hint: hint,
+      uppercase: this.uppercase
     };
     this.formulaResult.formula.push(item);
     console.log(this.formulaResult, 'this.formulaResult');
@@ -278,6 +284,9 @@ export class AppComponent {
             star = star + '*';
           }
           label = label + star + ' (first '+ digit +' digits)';
+          if (element.uppercase) {
+            label = label + star + ' (first '+ digit +' digits uppercase)';
+          }
         } else { // last of the string
           const digit = element.value.substr(0, element.value.length - 1);
           let star = '';
@@ -285,6 +294,9 @@ export class AppComponent {
             star = star + '*';
           }
           label = label + star + ' (last '+ digit +' digits)';
+          if (element.uppercase) {
+            label = label + star + ' (last '+ digit +' digits uppercase)';
+          }
         }
       }
 
@@ -302,7 +314,7 @@ export class AppComponent {
     });
     this.formulaResult.label = label;
     this.formulaResult.value = this.options.length + 1;
-    console.log(this.formulaResult, 'this.formulaResult');
+    console.log(this.formulaResult, 'this.formulaResult', this.uppercase);
     this.options.push(this.formulaResult);
     this.createStep = false;
   }
